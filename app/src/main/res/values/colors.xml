@@ -3,6 +3,9 @@
     <color name="white">#FFFFFF</color>
     <color name="notesColor">#CCB06C</color>
     <color name="notesColorLow">#7A6229</color>
+    <color name="above_wallpaper">#D9FFFFF6</color>
+    <color name="transparent">#00000000</color>
+    <color name="pressed">#1A000000</color>
     <color name="primary">#556423</color>
     <color name="onPrimary">#FFFFFF</color>
     <color name="primaryContainer">#D8EB9A</color>
