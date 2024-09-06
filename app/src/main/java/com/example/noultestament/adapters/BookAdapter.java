@@ -1,5 +1,7 @@
 package com.example.noultestament.adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noultestament.R;
+import com.example.noultestament.activities.ChapterActivity;
 import com.example.noultestament.utils.Book;
 
 import java.util.List;
@@ -33,7 +36,10 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         Book book = books.get(position);
         holder.bookName.setText(book.getName());
         holder.layout.setOnClickListener(v -> {
-
+            Context context = v.getContext();
+            Intent intent = new Intent(context, ChapterActivity.class);
+            intent.putExtra("book", book);
+            context.startActivity(intent);
         });
     }
 
@@ -43,8 +49,8 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView bookName;
-        ConstraintLayout layout;
+        private final TextView bookName;
+        private final ConstraintLayout layout;
 
         public ViewHolder(@NonNull ViewGroup parent) {
             super(parent);

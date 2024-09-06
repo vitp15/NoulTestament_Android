@@ -1,8 +1,9 @@
 package com.example.noultestament.utils;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class Book {
+public class Book implements Serializable {
     private final String name;
     private final int chapters;
     private final int order;
@@ -25,6 +26,10 @@ public class Book {
 
     public int getOrder() {
         return order;
+    }
+
+    public boolean hasNotes(int chapter) {
+        return hasNotes.get(chapter) != null && hasNotes.get(chapter);
     }
 
     public void setHasNotes(int chapter, boolean hasNotes) {
