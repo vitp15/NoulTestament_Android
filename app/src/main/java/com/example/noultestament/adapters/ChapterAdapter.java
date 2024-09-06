@@ -1,5 +1,7 @@
 package com.example.noultestament.adapters;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noultestament.R;
+import com.example.noultestament.activities.AudioActivity;
 import com.example.noultestament.utils.Book;
 
 public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ViewHolder> {
@@ -39,7 +42,10 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ViewHold
             holder.notes.setVisibility(View.GONE);
         }
         holder.layout.setOnClickListener(v -> {
-
+            Context context = v.getContext();
+            Intent intent = new Intent(context, AudioActivity.class);
+            intent.putExtra("bookOrder", book.getOrder());
+            context.startActivity(intent);
         });
     }
 

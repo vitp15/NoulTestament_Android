@@ -38,7 +38,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         holder.layout.setOnClickListener(v -> {
             Context context = v.getContext();
             Intent intent = new Intent(context, ChapterActivity.class);
-            intent.putExtra("book", book);
+            intent.putExtra("bookOrder", book.getOrder());
             context.startActivity(intent);
         });
     }

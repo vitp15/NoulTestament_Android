@@ -3,7 +3,7 @@ package com.example.noultestament.utils;
 import java.io.Serializable;
 import java.util.HashMap;
 
-public class Book implements Serializable {
+public class Book {
     private final String name;
     private final int chapters;
     private final int order;

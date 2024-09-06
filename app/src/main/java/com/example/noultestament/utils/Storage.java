@@ -1,6 +1,7 @@
 package com.example.noultestament.utils;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Storage {
     private final static Storage instance = new Storage();
@@ -16,6 +17,14 @@ public class Storage {
 
     public ArrayList<Book> getBooks() {
         return books;
+    }
+
+    public Book getBook(int order) {
+        if (order >= 1 && order <= 27) {
+            return books.get(order - 1);
+        } else {
+            return null;
+        }
     }
 
     private ArrayList<Book> getALLBooks() {
@@ -47,6 +56,7 @@ public class Storage {
         books.add(new Book("3 Ioan", 1, 25));
         books.add(new Book("Iuda", 1, 26));
         books.add(new Book("Apocalipsa", 22, 27));
+        books.sort(Comparator.comparingInt(Book::getOrder));
         return books;
     }
 }

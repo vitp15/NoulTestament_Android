@@ -4,17 +4,12 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noultestament.R;
-import com.example.noultestament.adapters.BookAdapter;
 import com.example.noultestament.adapters.ChapterAdapter;
 import com.example.noultestament.utils.Book;
 import com.example.noultestament.utils.Storage;
@@ -27,7 +22,8 @@ public class ChapterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chapter);
-        Book book = (Book) getIntent().getSerializableExtra("book");
+        int order = getIntent().getIntExtra("bookOrder", 0);
+        Book book = Storage.getInstance().getBook(order);
         if (book != null) {
             Toolbar toolbar = findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
