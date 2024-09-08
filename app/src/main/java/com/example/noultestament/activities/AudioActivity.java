@@ -1,22 +1,133 @@
 package com.example.noultestament.activities;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.noultestament.R;
-import com.example.noultestament.utils.Book;
+import com.example.noultestament.utils.AudioPlayer;
 import com.example.noultestament.utils.Storage;
 
+import java.io.FileNotFoundException;
+
 public class AudioActivity extends AppCompatActivity {
+    private int chapter, order;
+    private TextView bookName, chapterTxt, currentTime, duration, addNote;
+    private SeekBar seekBar;
+    private ImageView playPause, prev, next, replay, forward, back;
+    private ConstraintLayout marks_layout;
+    private AudioPlayer audioPlayer;
+    private boolean isDragged = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio);
-        int order = getIntent().getIntExtra("bookOrder", 0);
-        Book book = Storage.getInstance().getBook(order);
-        if (book != null) {
+        order = getIntent().getIntExtra("bookOrder", 0);
+        chapter = getIntent().getIntExtra("chapter", 0);
+        setupData();
+        setupAudio(0);
+        AudioActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (!audioPlayer.isNull()) {
+                    if (!isDragged) {
+                        seekBar.setProgress(audioPlayer.getCurrentPosition());
+                    }
+                    currentTime.setText(AudioPlayer.convertTime(audioPlayer.getCurrentPosition()));
+                }
+                if (audioPlayer != null && audioPlayer.isPlaying()) {
+                    playPause.setImageResource(R.drawable.pause);
+                } else {
+                    playPause.setImageResource(R.drawable.play);
+                }
+                new Handler().postDelayed(this, 100);
+            }
+        });
+        back.setOnClickListener(v -> onBackPressed());
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                isDragged = true;
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                isDragged = false;
+                audioPlayer.seekTo(seekBar.getProgress());
+            }
+        });
+        playPause.setOnClickListener(v -> {
+            if (audioPlayer.isPlaying()) {
+                audioPlayer.pauseAudio();
+            } else {
+                audioPlayer.playAudio();
+            }
+        });
+        prev.setOnClickListener(v -> setupAudio(2));
+        next.setOnClickListener(v -> setupAudio(1));
+        replay.setOnClickListener(v -> audioPlayer.replay(5));
+        forward.setOnClickListener(v -> audioPlayer.forward(5));
+    }
+
+    private void setupData() {
+        bookName = findViewById(R.id.book_name);
+        chapterTxt = findViewById(R.id.book_chapter);
+        currentTime = findViewById(R.id.current_time);
+        duration = findViewById(R.id.total_time);
+        addNote = findViewById(R.id.addNote);
+        seekBar = findViewById(R.id.track);
+        playPause = findViewById(R.id.play_pause);
+        prev = findViewById(R.id.previous);
+        next = findViewById(R.id.next);
+        replay = findViewById(R.id.replay);
+        forward = findViewById(R.id.forward);
+        back = findViewById(R.id.back);
+        marks_layout = findViewById(R.id.marks_layout);
+    }
+
+    private void setupAudio(int option) {
+        try {
+            switch (option) {
+                case 1:
+                    audioPlayer.next();
+                    break;
+                case 2:
+                    audioPlayer.previous();
+                    break;
+                case 0:
+                default:
+                    audioPlayer = new AudioPlayer(this, chapter, order);
+                    audioPlayer.setupAudio();
+                    break;
+            }
+            bookName.setText(Storage.getInstance().getBook(audioPlayer.getOrder()).getName());
+            chapterTxt.setText(String.valueOf(audioPlayer.getCurrentChapter()));
+            audioPlayer.setOnCompletionListener(mp -> setupAudio(1));
+            audioPlayer.playAudio();
+        } catch (FileNotFoundException e) {
+            bookName.setText(R.string.chapter_unaviable);
+            chapterTxt.setText("");
         }
+        seekBar.setProgress(0);
+        seekBar.setMax(audioPlayer.getDuration());
+        currentTime.setText(AudioPlayer.convertTime(audioPlayer.getCurrentPosition()));
+        duration.setText(AudioPlayer.convertTime(audioPlayer.getDuration()));
+    }
+
+    @Override
+    public void onBackPressed() {
+        audioPlayer.stopAudio();
+        super.onBackPressed();
     }
 }

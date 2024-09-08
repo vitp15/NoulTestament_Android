@@ -12,4 +12,5 @@
     <string name="forward">forward</string>
     <string name="book_name">Matei</string>
     <string name="book_chapter">4</string>
+    <string name="chapter_unaviable">Acest capitol momentan nu e disponibil</string>
 </resources>

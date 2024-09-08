@@ -35,4 +35,8 @@ public class Book {
     public void setHasNotes(int chapter, boolean hasNotes) {
         this.hasNotes.put(chapter, hasNotes);
     }
+
+    public String getAudioName(int chapter) {
+        return "b_" + name.replaceAll(" ", "_").toLowerCase() + "_" + String.format("%02d", chapter);
+    }
 }

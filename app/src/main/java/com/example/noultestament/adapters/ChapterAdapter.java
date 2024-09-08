@@ -45,6 +45,7 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ViewHold
             Context context = v.getContext();
             Intent intent = new Intent(context, AudioActivity.class);
             intent.putExtra("bookOrder", book.getOrder());
+            intent.putExtra("chapter", position + 1);
             context.startActivity(intent);
         });
     }
