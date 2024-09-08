@@ -1,5 +1,12 @@
 package com.example.noultestament.utils;
 
+import static android.content.Context.MODE_PRIVATE;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import com.example.noultestament.R;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -25,6 +32,54 @@ public class Storage {
         } else {
             return null;
         }
+    }
+
+    public void saveCurrentTime(Context context, int order, int chapter, int time) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.MY_APP_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Book book = getBook(order);
+        if (book != null) {
+            editor.putInt(book.getAudioName(chapter), time);
+            editor.apply();
+        }
+    }
+
+    public int getCurrentTime(Context context, int order, int chapter) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.MY_APP_PREFS, MODE_PRIVATE);
+        Book book = getBook(order);
+        if (book != null) {
+            return sharedPreferences.getInt(book.getAudioName(chapter), 0);
+        }
+        return 0;
+    }
+
+    public void removeCurrentTime(Context context, int order, int chapter) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.MY_APP_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Book book = getBook(order);
+        if (book != null) {
+            editor.remove(book.getAudioName(chapter));
+            editor.apply();
+        }
+    }
+
+    public void saveForceClosed(Context context, int order, int chapter) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.MY_APP_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(Constants.FORCE_CLOSED, order + "_" + chapter);
+        editor.apply();
+    }
+
+    public String getForceClosed(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.MY_APP_PREFS, MODE_PRIVATE);
+        return sharedPreferences.getString(Constants.FORCE_CLOSED, "");
+    }
+
+    public void removeForceClosed(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.MY_APP_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.remove(Constants.FORCE_CLOSED);
+        editor.apply();
     }
 
     private ArrayList<Book> getALLBooks() {

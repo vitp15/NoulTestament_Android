@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.noultestament.R;
 import com.example.noultestament.activities.ChapterActivity;
 import com.example.noultestament.utils.Book;
+import com.example.noultestament.utils.Constants;
 
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         holder.layout.setOnClickListener(v -> {
             Context context = v.getContext();
             Intent intent = new Intent(context, ChapterActivity.class);
-            intent.putExtra("bookOrder", book.getOrder());
+            intent.putExtra(Constants.BOOK_ORDER, book.getOrder());
             context.startActivity(intent);
         });
     }

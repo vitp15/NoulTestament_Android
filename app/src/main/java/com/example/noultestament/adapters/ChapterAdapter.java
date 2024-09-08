@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.noultestament.R;
 import com.example.noultestament.activities.AudioActivity;
 import com.example.noultestament.utils.Book;
+import com.example.noultestament.utils.Constants;
 
 public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ViewHolder> {
     private final Book book;
@@ -44,8 +45,8 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ViewHold
         holder.layout.setOnClickListener(v -> {
             Context context = v.getContext();
             Intent intent = new Intent(context, AudioActivity.class);
-            intent.putExtra("bookOrder", book.getOrder());
-            intent.putExtra("chapter", position + 1);
+            intent.putExtra(Constants.BOOK_ORDER, book.getOrder());
+            intent.putExtra(Constants.CHAPTER, position + 1);
             context.startActivity(intent);
         });
     }

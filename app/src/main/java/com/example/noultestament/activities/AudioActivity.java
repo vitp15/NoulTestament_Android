@@ -2,6 +2,7 @@ package com.example.noultestament.activities;
 
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -11,25 +12,29 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.noultestament.R;
 import com.example.noultestament.utils.AudioPlayer;
+import com.example.noultestament.utils.Constants;
 import com.example.noultestament.utils.Storage;
 
 import java.io.FileNotFoundException;
 
 public class AudioActivity extends AppCompatActivity {
     private int chapter, order;
+    private boolean fromForceClosed;
     private TextView bookName, chapterTxt, currentTime, duration, addNote;
     private SeekBar seekBar;
     private ImageView playPause, prev, next, replay, forward, back;
     private ConstraintLayout marks_layout;
     private AudioPlayer audioPlayer;
     private boolean isDragged = false;
+    private boolean isBackPressed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio);
-        order = getIntent().getIntExtra("bookOrder", 0);
-        chapter = getIntent().getIntExtra("chapter", 0);
+        order = getIntent().getIntExtra(Constants.BOOK_ORDER, 0);
+        chapter = getIntent().getIntExtra(Constants.CHAPTER, 0);
+        fromForceClosed = getIntent().getBooleanExtra(Constants.FORCE_CLOSED, false);
         setupData();
         setupAudio(0);
         AudioActivity.this.runOnUiThread(new Runnable() {
@@ -114,12 +119,15 @@ public class AudioActivity extends AppCompatActivity {
             bookName.setText(Storage.getInstance().getBook(audioPlayer.getOrder()).getName());
             chapterTxt.setText(String.valueOf(audioPlayer.getCurrentChapter()));
             audioPlayer.setOnCompletionListener(mp -> setupAudio(1));
-            audioPlayer.playAudio();
+            if (!fromForceClosed) {
+                audioPlayer.playAudio();
+            }
+            fromForceClosed = false;
         } catch (FileNotFoundException e) {
             bookName.setText(R.string.chapter_unaviable);
             chapterTxt.setText("");
         }
-        seekBar.setProgress(0);
+        seekBar.setProgress(audioPlayer.getCurrentPosition());
         seekBar.setMax(audioPlayer.getDuration());
         currentTime.setText(AudioPlayer.convertTime(audioPlayer.getCurrentPosition()));
         duration.setText(AudioPlayer.convertTime(audioPlayer.getDuration()));
@@ -127,7 +135,25 @@ public class AudioActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        audioPlayer.stopAudio();
+        isBackPressed = true;
         super.onBackPressed();
+    }
+
+    @Override
+    protected void onPause() {
+        Storage.getInstance().saveCurrentTime(this, audioPlayer.getOrder(), audioPlayer.getCurrentChapter(), audioPlayer.getCurrentPosition());
+        if (!isBackPressed) {
+            Storage.getInstance().saveForceClosed(this, audioPlayer.getOrder(), audioPlayer.getCurrentChapter());
+        } else {
+            audioPlayer.stopAudio();
+        }
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Storage.getInstance().removeCurrentTime(this, audioPlayer.getOrder(), audioPlayer.getCurrentChapter());
+        Storage.getInstance().removeForceClosed(this);
     }
 }

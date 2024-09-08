@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.noultestament.R;
 import com.example.noultestament.adapters.ChapterAdapter;
 import com.example.noultestament.utils.Book;
+import com.example.noultestament.utils.Constants;
 import com.example.noultestament.utils.Storage;
 
 import java.util.Objects;
@@ -22,7 +23,7 @@ public class ChapterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chapter);
-        int order = getIntent().getIntExtra("bookOrder", 0);
+        int order = getIntent().getIntExtra(Constants.BOOK_ORDER, 0);
         Book book = Storage.getInstance().getBook(order);
         if (book != null) {
             Toolbar toolbar = findViewById(R.id.toolbar);

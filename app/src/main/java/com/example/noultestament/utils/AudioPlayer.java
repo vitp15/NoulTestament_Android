@@ -2,7 +2,6 @@ package com.example.noultestament.utils;
 
 import android.content.Context;
 import android.media.MediaPlayer;
-import android.util.Log;
 
 import java.io.FileNotFoundException;
 import java.util.concurrent.TimeUnit;
@@ -25,6 +24,9 @@ public class AudioPlayer {
         stopAudio();
         if (resId != 0) {
             mediaPlayer = MediaPlayer.create(context, resId);
+            int time = Storage.getInstance().getCurrentTime(context, order, currentChapter);
+            seekTo(time);
+            Storage.getInstance().removeCurrentTime(context, order, currentChapter);
         } else {
             throw new FileNotFoundException("File not found");
         }
