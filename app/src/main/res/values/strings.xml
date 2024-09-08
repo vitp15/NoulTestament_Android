@@ -13,4 +13,8 @@
     <string name="book_name">Matei</string>
     <string name="book_chapter">4</string>
     <string name="chapter_unaviable">Acest capitol momentan nu e disponibil</string>
+    <string name="notification_name">Biblia - Noul Testament</string>
+    <string name="notification_description">Ascultă din Cuvânt și azi!</string>
+    <string name="channel_name">Daily Notification</string>
+    <string name="channel_description">Channel for daily notifications</string>
 </resources>

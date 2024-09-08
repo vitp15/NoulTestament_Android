@@ -1,6 +1,5 @@
 package com.example.noultestament.utils;
 
-import java.io.Serializable;
 import java.util.HashMap;
 
 public class Book {
