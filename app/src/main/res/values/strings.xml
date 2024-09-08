@@ -3,4 +3,13 @@
     <string name="new_testament">Noul Testament</string>
     <string name="note">Note</string>
     <string name="back">Înapoi</string>
+    <string name="add_note">Adaugă\nnotiță</string>
+    <string name="time">00:00</string>
+    <string name="previous">previous</string>
+    <string name="play_pause">play_pause</string>
+    <string name="next">next</string>
+    <string name="replay">replay</string>
+    <string name="forward">forward</string>
+    <string name="book_name">Matei</string>
+    <string name="book_chapter">4</string>
 </resources>
