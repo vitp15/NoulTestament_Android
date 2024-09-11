@@ -64,7 +64,7 @@ public class NotesActivity extends AppCompatActivity {
         notes.sort(Comparator.comparingInt(Note::getCharacter));
         char character = !notes.isEmpty() ? notes.get(notes.size() - 1).getCharacter() : 'Z';
         char nextCharacter = character != 'Z' ? (char) (character + 1) : 'A';
-        if (addNote) {
+        if (addNote && !storage.existNoteAtTime(order, chapter, atTime, 0)) {
             notes.add(0, new Note(nextCharacter, atTime));
         }
         storage.saveNotes(this);

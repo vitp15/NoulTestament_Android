@@ -45,7 +45,6 @@ public class AudioActivity extends AppCompatActivity {
         fromForceClosed = getIntent().getBooleanExtra(Constants.FORCE_CLOSED, false);
         setupData();
         setupAudio(0);
-        setupMarks();
         AudioActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -137,7 +136,10 @@ public class AudioActivity extends AppCompatActivity {
 
     private void setupMarks() {
         marks_layout.removeAllViews();
-        ArrayList<Note> notes = Storage.getInstance().getNotes(order, chapter);
+        ArrayList<Note> notes = Storage.getInstance().getNotes(audioPlayer.getOrder(), audioPlayer.getCurrentChapter());
+        if (notes == null) {
+            return;
+        }
         for (Note note : notes) {
             @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.note_mark_item, marks_layout, false);
             if (view.getId() == View.NO_ID) {
@@ -189,6 +191,7 @@ public class AudioActivity extends AppCompatActivity {
         seekBar.setMax(audioPlayer.getDuration());
         currentTime.setText(AudioPlayer.convertTime(audioPlayer.getCurrentPosition()));
         duration.setText(AudioPlayer.convertTime(audioPlayer.getDuration()));
+        setupMarks();
     }
 
     private void setMargin(int atTime, ConstraintLayout.LayoutParams params) {
