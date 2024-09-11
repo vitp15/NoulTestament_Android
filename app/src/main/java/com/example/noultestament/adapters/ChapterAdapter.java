@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noultestament.R;
 import com.example.noultestament.activities.AudioActivity;
+import com.example.noultestament.activities.NotesActivity;
 import com.example.noultestament.utils.Book;
 import com.example.noultestament.utils.Constants;
 
@@ -37,7 +38,11 @@ public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ViewHold
         if (book.hasNotes(position + 1)) {
             holder.notes.setVisibility(View.VISIBLE);
             holder.notes.setOnClickListener(v -> {
-
+                Context context = v.getContext();
+                Intent intent = new Intent(context, NotesActivity.class);
+                intent.putExtra(Constants.BOOK_ORDER, book.getOrder());
+                intent.putExtra(Constants.CHAPTER, position + 1);
+                context.startActivity(intent);
             });
         } else {
             holder.notes.setVisibility(View.GONE);

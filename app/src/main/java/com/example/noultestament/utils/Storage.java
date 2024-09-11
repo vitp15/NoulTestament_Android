@@ -6,16 +6,28 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.example.noultestament.R;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.SortedSet;
 
 public class Storage {
     private final static Storage instance = new Storage();
+    private final Gson gson;
     private final ArrayList<Book> books;
+    private final HashMap<String, ArrayList<Note>> notes;
 
     private Storage() {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapter(Note.class, new Note.NoteDeserializer());
+        gson = gsonBuilder.create();
         books = getALLBooks();
+        notes = new HashMap<>();
     }
 
     public static Storage getInstance() {
@@ -32,6 +44,16 @@ public class Storage {
         } else {
             return null;
         }
+    }
+
+    public ArrayList<Note> getNotes(int order, int chapter) {
+        String key = Note.createKey(order, chapter);
+        return notes.get(key);
+    }
+
+    public void createEmptyArrayAtKey(int order, int chapter) {
+        String key = Note.createKey(order, chapter);
+        notes.computeIfAbsent(key, k -> new ArrayList<>());
     }
 
     public void saveCurrentTime(Context context, int order, int chapter, int time) {
@@ -80,6 +102,58 @@ public class Storage {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(Constants.FORCE_CLOSED);
         editor.apply();
+    }
+
+    public boolean existNoteAtTime(int order, int chapter, int time, int interval) {
+        String key = Note.createKey(order, chapter);
+        if (notes.get(key) != null) {
+            for (Note note : notes.get(key)) {
+                if (Math.abs(note.getAtTime() - time) <= 1000 * interval) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean hasLessNotes(int order, int chapter, int number) {
+        String key = Note.createKey(order, chapter);
+        return (notes.get(key) != null && notes.get(key).size() < number) || notes.get(key) == null;
+    }
+
+    public void saveNotes(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.MY_APP_PREFS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String json = gson.toJson(notes);
+        editor.putString(Constants.NOTES, json);
+        editor.apply();
+        updateBooksWitNotes();
+    }
+
+    public void loadNotes(Context context) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constants.MY_APP_PREFS, Context.MODE_PRIVATE);
+        String json = sharedPreferences.getString(Constants.NOTES, "");
+        Type type = new TypeToken<HashMap<String, ArrayList<Note>>>() {
+        }.getType();
+        notes.clear();
+        if (gson.fromJson(json, type) != null) {
+            notes.putAll(gson.fromJson(json, type));
+        }
+    }
+
+    public void updateBooksWitNotes() {
+        for (String key : notes.keySet()) {
+            if (notes.get(key) != null) {
+                int order = Note.getOrder(key);
+                int chapter = Note.getChapter(key);
+                Book book = getBook(order);
+                if (!notes.get(key).isEmpty()) {
+                    book.setHasNotes(chapter, true);
+                } else {
+                    book.setHasNotes(chapter, false);
+                }
+            }
+        }
     }
 
     private ArrayList<Book> getALLBooks() {

@@ -6,6 +6,7 @@
     <color name="above_wallpaper">#D9FFFFF6</color>
     <color name="transparent">#00000000</color>
     <color name="pressed">#1A000000</color>
+    <color name="seed">#62684C</color>
     <color name="primary">#556423</color>
     <color name="onPrimary">#FFFFFF</color>
     <color name="primaryContainer">#D8EB9A</color>

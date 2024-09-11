@@ -17,4 +17,16 @@
     <string name="notification_description">Ascultă din Cuvânt și azi!</string>
     <string name="channel_name">Daily Notification</string>
     <string name="channel_description">Channel for daily notifications</string>
+    <string name="delete">delete</string>
+    <string name="edit">edit</string>
+    <string name="character">A</string>
+    <string name="message">Mesajul in mai multe randuri</string>
+    <string name="insert_note">Introduceți notița</string>
+    <string name="delete_note_title">Șterge notița</string>
+    <string name="delete_note_message">Ești sigur că vrei să ștergi notița?</string>
+    <string name="delete_note_button">Șterge</string>
+    <string name="delete_note_cancel">Anulează</string>
+    <string name="message_min_interval">Puteți crea o notă doar la cel puțin 10 secunde diferență față de precedenta</string>
+    <string name="message_max_notes">Nu puteți crea mai mult de 10 notițe pe capitol</string>
+    <string name="ok">OK</string>
 </resources>

@@ -1,5 +1,8 @@
 package com.example.noultestament.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -13,9 +16,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import com.example.noultestament.R;
 import com.example.noultestament.utils.AudioPlayer;
 import com.example.noultestament.utils.Constants;
+import com.example.noultestament.utils.Note;
 import com.example.noultestament.utils.Storage;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 public class AudioActivity extends AppCompatActivity {
     private int chapter, order;
@@ -83,6 +88,31 @@ public class AudioActivity extends AppCompatActivity {
         next.setOnClickListener(v -> setupAudio(1));
         replay.setOnClickListener(v -> audioPlayer.replay(5));
         forward.setOnClickListener(v -> audioPlayer.forward(5));
+        addNote.setOnClickListener(v -> {
+            if (Storage.getInstance().existNoteAtTime(order, chapter, audioPlayer.getCurrentPosition(), 10)) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("")
+                        .setMessage(R.string.message_min_interval)
+                        .setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss())
+                        .setCancelable(true)
+                        .show();
+            } else if (!Storage.getInstance().hasLessNotes(order, chapter, 10)) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("")
+                        .setMessage(R.string.message_max_notes)
+                        .setPositiveButton(R.string.ok, (dialog, which) -> dialog.dismiss())
+                        .setCancelable(true)
+                        .show();
+            } else {
+                Storage.getInstance().saveCurrentTime(this, audioPlayer.getOrder(), audioPlayer.getCurrentChapter(), audioPlayer.getCurrentPosition());
+                Intent intent = new Intent(this, NotesActivity.class);
+                intent.putExtra(Constants.BOOK_ORDER, audioPlayer.getOrder());
+                intent.putExtra(Constants.CHAPTER, audioPlayer.getCurrentChapter());
+                intent.putExtra(Constants.ADD_NOTE, true);
+                intent.putExtra(Constants.AT_TIME, audioPlayer.getCurrentPosition());
+                startActivity(intent);
+            }
+        });
     }
 
     private void setupData() {

@@ -23,6 +23,7 @@
         android:layout_height="wrap_content"
         android:autoSizeMinTextSize="18sp"
         android:fontFamily="@font/roboto_medium"
+        android:maxLines="1"
         android:paddingHorizontal="24dp"
         android:text="Numele cartii [capitol]"
         android:textColor="@color/onSurface"

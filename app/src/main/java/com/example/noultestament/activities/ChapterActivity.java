@@ -1,5 +1,6 @@
 package com.example.noultestament.activities;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,25 +19,41 @@ import com.example.noultestament.utils.Storage;
 import java.util.Objects;
 
 public class ChapterActivity extends AppCompatActivity {
+    private int order;
+    private Book book;
+    private RecyclerView recyclerView;
+    private TextView title;
+    private ImageView back;
+    private ChapterAdapter adapter;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chapter);
-        int order = getIntent().getIntExtra(Constants.BOOK_ORDER, 0);
-        Book book = Storage.getInstance().getBook(order);
+        order = getIntent().getIntExtra(Constants.BOOK_ORDER, 0);
+        book = Storage.getInstance().getBook(order);
         if (book != null) {
-            Toolbar toolbar = findViewById(R.id.toolbar);
+            toolbar = findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
             Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
-            TextView title = toolbar.findViewById(R.id.title);
+            title = toolbar.findViewById(R.id.title);
             title.setText(book.getName());
-            ImageView back = toolbar.findViewById(R.id.back);
+            back = toolbar.findViewById(R.id.back);
             back.setOnClickListener(v -> onBackPressed());
-            RecyclerView recyclerView = findViewById(R.id.list);
+            recyclerView = findViewById(R.id.list);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            ChapterAdapter adapter = new ChapterAdapter(book);
+            adapter = new ChapterAdapter(book);
             recyclerView.setAdapter(adapter);
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (book != null) {
+            adapter.notifyDataSetChanged();
         }
     }
 }
