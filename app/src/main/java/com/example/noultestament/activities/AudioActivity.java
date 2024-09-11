@@ -107,6 +107,7 @@ public class AudioActivity extends AppCompatActivity {
                         .setCancelable(true)
                         .show();
             } else {
+                audioPlayer.pauseAudio();
                 Storage.getInstance().saveCurrentTime(this, audioPlayer.getOrder(), audioPlayer.getCurrentChapter(), audioPlayer.getCurrentPosition());
                 Intent intent = new Intent(this, NotesActivity.class);
                 intent.putExtra(Constants.BOOK_ORDER, audioPlayer.getOrder());
