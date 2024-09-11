@@ -1,8 +1,7 @@
 <resources>
     <style name="Theme.NoulTestament" parent="Theme.Material3.Light.NoActionBar">
         <item name="android:fontFamily">@font/roboto_regular</item>
-        <item name="actionBarStyle">@style/CustomActionBar</item>
-        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimary">@color/seed</item>
         <item name="colorOnPrimary">@color/onPrimary</item>
         <item name="colorPrimaryContainer">@color/primaryContainer</item>
         <item name="colorOnPrimaryContainer">@color/onPrimaryContainer</item>
