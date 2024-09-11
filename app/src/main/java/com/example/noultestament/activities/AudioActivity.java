@@ -1,11 +1,14 @@
 package com.example.noultestament.activities;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -42,6 +45,7 @@ public class AudioActivity extends AppCompatActivity {
         fromForceClosed = getIntent().getBooleanExtra(Constants.FORCE_CLOSED, false);
         setupData();
         setupAudio(0);
+        setupMarks();
         AudioActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -131,6 +135,30 @@ public class AudioActivity extends AppCompatActivity {
         marks_layout = findViewById(R.id.marks_layout);
     }
 
+    private void setupMarks() {
+        marks_layout.removeAllViews();
+        ArrayList<Note> notes = Storage.getInstance().getNotes(order, chapter);
+        for (Note note : notes) {
+            @SuppressLint("InflateParams") View view = getLayoutInflater().inflate(R.layout.note_mark_item, marks_layout, false);
+            if (view.getId() == View.NO_ID) {
+                view.setId(View.generateViewId());
+            }
+            ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(
+                    ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                    ConstraintLayout.LayoutParams.WRAP_CONTENT
+            );
+            params.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+            params.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
+            params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
+            setMargin(note.getAtTime(), params);
+            view.setLayoutParams(params);
+            TextView character = view.findViewById(R.id.character);
+            character.setText(String.valueOf(note.getCharacter()));
+            view.setOnClickListener(v ->  audioPlayer.seekTo(note.getAtTime()));
+            marks_layout.addView(view);
+        }
+    }
+
     private void setupAudio(int option) {
         try {
             switch (option) {
@@ -163,6 +191,20 @@ public class AudioActivity extends AppCompatActivity {
         duration.setText(AudioPlayer.convertTime(audioPlayer.getDuration()));
     }
 
+    private void setMargin(int atTime, ConstraintLayout.LayoutParams params) {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int screenWidth = displayMetrics.widthPixels;
+        int totalSeekBarWidth = screenWidth - dpToPx(32);
+        int margin = (int) ((float) atTime / audioPlayer.getDuration() * totalSeekBarWidth);
+        params.setMarginStart(margin);
+    }
+
+    private int dpToPx(int dp) {
+        float density = getResources().getDisplayMetrics().density;
+        return Math.round(dp * density);
+    }
+
     @Override
     public void onBackPressed() {
         isBackPressed = true;
@@ -185,5 +227,6 @@ public class AudioActivity extends AppCompatActivity {
         super.onResume();
         Storage.getInstance().removeCurrentTime(this, audioPlayer.getOrder(), audioPlayer.getCurrentChapter());
         Storage.getInstance().removeForceClosed(this);
+        setupMarks();
     }
 }
