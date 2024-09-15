@@ -2,7 +2,9 @@ package com.example.noultestament.adapters;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.noultestament.R;
+import com.example.noultestament.activities.AudioActivity;
+import com.example.noultestament.utils.Constants;
 import com.example.noultestament.utils.Note;
 import com.example.noultestament.utils.Storage;
 
@@ -26,8 +30,11 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
     private boolean addNote;
     private final Storage storage;
     private final ArrayList<Note> notes;
+    private final int order, chapter;
 
     public NoteAdapter(int order, int chapter, boolean addNote) {
+        this.order = order;
+        this.chapter = chapter;
         this.addNote = addNote;
         storage = Storage.getInstance();
         if (storage.getNotes(order, chapter) == null) {
@@ -92,6 +99,8 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         holder.edit.setOnClickListener(v -> {
             editMode(holder);
         });
+        holder.noteIcon.setOnClickListener(v -> goToAudio(holder, note));
+        holder.message.setOnClickListener(v -> goToAudio(holder, note));
     }
 
     @Override
@@ -101,7 +110,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView character, message;
-        private final ImageView edit, delete;
+        private final ImageView edit, delete, noteIcon;
         private final EditText editMessage;
 
         public ViewHolder(@NonNull View itemView) {
@@ -110,6 +119,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
             message = itemView.findViewById(R.id.message);
             edit = itemView.findViewById(R.id.edit);
             delete = itemView.findViewById(R.id.delete);
+            noteIcon = itemView.findViewById(R.id.note_icon);
             editMessage = itemView.findViewById(R.id.message_edit_text);
         }
     }
@@ -128,5 +138,14 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
         holder.editMessage.setVisibility(View.GONE);
         holder.edit.setVisibility(View.VISIBLE);
         holder.delete.setVisibility(View.VISIBLE);
+    }
+
+    private void goToAudio(NoteAdapter.ViewHolder holder, Note note) {
+        Storage.getInstance().saveCurrentTime(holder.itemView.getContext(), order, chapter, note.getAtTime());
+        Context context = holder.itemView.getContext();
+        Intent intent = new Intent(context, AudioActivity.class);
+        intent.putExtra(Constants.BOOK_ORDER, order);
+        intent.putExtra(Constants.CHAPTER, chapter);
+        context.startActivity(intent);
     }
 }

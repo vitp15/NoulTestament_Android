@@ -62,11 +62,22 @@ public class NotesActivity extends AppCompatActivity {
         }
         ArrayList<Note> notes = storage.getNotes(order, chapter);
         notes.sort(Comparator.comparingInt(Note::getCharacter));
-        char character = !notes.isEmpty() ? notes.get(notes.size() - 1).getCharacter() : 'Z';
-        char nextCharacter = character != 'Z' ? (char) (character + 1) : 'A';
+        char nextCharacter = nextCharacter(notes);
         if (addNote && !storage.existNoteAtTime(order, chapter, atTime, 0)) {
             notes.add(0, new Note(nextCharacter, atTime));
         }
         storage.saveNotes(this);
+    }
+
+    private char nextCharacter(ArrayList<Note> notes) {
+        char nextCharacter = 'A';
+        for (Note note : notes) {
+            if (note.getCharacter() == nextCharacter) {
+                nextCharacter++;
+            } else {
+                break;
+            }
+        }
+        return nextCharacter;
     }
 }
