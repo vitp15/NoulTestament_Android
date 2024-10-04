@@ -14,3 +14,6 @@
 .cxx
 local.properties
 b_*.mp3
+bundletool-all-*.jar
+output.apks
+*.aab

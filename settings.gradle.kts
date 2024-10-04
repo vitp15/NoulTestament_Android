@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "NoulTestament"
 include(":app")
+include(":audioassets")

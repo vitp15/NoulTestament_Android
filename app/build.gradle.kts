@@ -10,7 +10,7 @@ android {
         applicationId = "com.lovib.noultestament"
         minSdk = 29
         targetSdk = 34
-        versionCode = 1
+        versionCode = 4
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -29,6 +29,8 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+
+    assetPacks += listOf(":audioassets")
 }
 
 dependencies {

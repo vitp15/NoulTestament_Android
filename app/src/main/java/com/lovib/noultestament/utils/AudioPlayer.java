@@ -1,9 +1,12 @@
 package com.lovib.noultestament.utils;
 
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
 import android.media.MediaPlayer;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 public class AudioPlayer {
@@ -19,17 +22,23 @@ public class AudioPlayer {
     }
 
     public void setupAudio() throws FileNotFoundException {
-        String fileName = Storage.getInstance().getBook(order).getAudioName(currentChapter);
-        int resId = context.getResources().getIdentifier(fileName, "raw", context.getPackageName());
+        String fileName = Storage.getInstance().getBook(order).getAudioName(currentChapter) + ".mp3";
         stopAudio();
-        if (resId != 0) {
-            mediaPlayer = MediaPlayer.create(context, resId);
-            int time = Storage.getInstance().getCurrentTime(context, order, currentChapter);
-            seekTo(time);
-            Storage.getInstance().removeCurrentTime(context, order, currentChapter);
-        } else {
+        try {
+            AssetManager assetManager = context.getAssets();
+            AssetFileDescriptor assetFileDescriptor = assetManager.openFd(fileName);
+            mediaPlayer = new MediaPlayer();
+            mediaPlayer.setDataSource(assetFileDescriptor.getFileDescriptor(),
+                    assetFileDescriptor.getStartOffset(),
+                    assetFileDescriptor.getLength());
+            mediaPlayer.prepare();
+            assetFileDescriptor.close();
+        } catch (IOException e) {
             throw new FileNotFoundException("File not found");
         }
+        int time = Storage.getInstance().getCurrentTime(context, order, currentChapter);
+        seekTo(time);
+        Storage.getInstance().removeCurrentTime(context, order, currentChapter);
     }
 
     public boolean isNull() {
