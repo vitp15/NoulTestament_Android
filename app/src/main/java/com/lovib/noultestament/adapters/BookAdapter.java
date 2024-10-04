@@ -1,4 +1,4 @@
-package com.example.noultestament.adapters;
+package com.lovib.noultestament.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,10 +11,10 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.noultestament.R;
-import com.example.noultestament.activities.ChapterActivity;
-import com.example.noultestament.utils.Book;
-import com.example.noultestament.utils.Constants;
+import com.lovib.noultestament.R;
+import com.lovib.noultestament.activities.ChapterActivity;
+import com.lovib.noultestament.utils.Book;
+import com.lovib.noultestament.utils.Constants;
 
 import java.util.List;
 

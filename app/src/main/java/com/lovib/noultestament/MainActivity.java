@@ -1,4 +1,4 @@
-package com.example.noultestament;
+package com.lovib.noultestament;
 
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
@@ -18,11 +18,11 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.noultestament.activities.AudioActivity;
-import com.example.noultestament.adapters.BookAdapter;
-import com.example.noultestament.notifications.NotificationReciver;
-import com.example.noultestament.utils.Constants;
-import com.example.noultestament.utils.Storage;
+import com.lovib.noultestament.activities.AudioActivity;
+import com.lovib.noultestament.adapters.BookAdapter;
+import com.lovib.noultestament.notifications.NotificationReciver;
+import com.lovib.noultestament.utils.Constants;
+import com.lovib.noultestament.utils.Storage;
 
 import java.util.Calendar;
 import java.util.Objects;

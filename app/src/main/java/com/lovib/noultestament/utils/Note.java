@@ -1,4 +1,4 @@
-package com.example.noultestament.utils;
+package com.lovib.noultestament.utils;
 
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;

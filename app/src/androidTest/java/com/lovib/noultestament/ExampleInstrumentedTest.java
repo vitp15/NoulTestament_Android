@@ -1,4 +1,4 @@
-package com.example.noultestament;
+package com.lovib.noultestament;
 
 import android.content.Context;
 

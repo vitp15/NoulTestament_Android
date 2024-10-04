@@ -1,4 +1,4 @@
-package com.example.noultestament;
+package com.lovib.noultestament;
 
 import org.junit.Test;
 

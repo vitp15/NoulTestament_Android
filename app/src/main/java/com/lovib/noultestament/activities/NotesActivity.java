@@ -1,25 +1,20 @@
-package com.example.noultestament.activities;
+package com.lovib.noultestament.activities;
 
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.noultestament.R;
-import com.example.noultestament.adapters.ChapterAdapter;
-import com.example.noultestament.adapters.NoteAdapter;
-import com.example.noultestament.utils.Book;
-import com.example.noultestament.utils.Constants;
-import com.example.noultestament.utils.Note;
-import com.example.noultestament.utils.Storage;
+import com.lovib.noultestament.R;
+import com.lovib.noultestament.adapters.NoteAdapter;
+import com.lovib.noultestament.utils.Book;
+import com.lovib.noultestament.utils.Constants;
+import com.lovib.noultestament.utils.Note;
+import com.lovib.noultestament.utils.Storage;
 
 import java.util.ArrayList;
 import java.util.Comparator;

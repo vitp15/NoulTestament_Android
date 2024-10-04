@@ -1,4 +1,4 @@
-package com.example.noultestament.utils;
+package com.lovib.noultestament.utils;
 
 public class Constants {
     public static final String MY_APP_PREFS = "myappprefs";

@@ -1,4 +1,4 @@
-package com.example.noultestament.adapters;
+package com.lovib.noultestament.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,11 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.noultestament.R;
-import com.example.noultestament.activities.AudioActivity;
-import com.example.noultestament.activities.NotesActivity;
-import com.example.noultestament.utils.Book;
-import com.example.noultestament.utils.Constants;
+import com.lovib.noultestament.R;
+import com.lovib.noultestament.activities.AudioActivity;
+import com.lovib.noultestament.activities.NotesActivity;
+import com.lovib.noultestament.utils.Book;
+import com.lovib.noultestament.utils.Constants;
 
 public class ChapterAdapter extends RecyclerView.Adapter<ChapterAdapter.ViewHolder> {
     private final Book book;

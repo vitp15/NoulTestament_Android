@@ -1,13 +1,11 @@
-package com.example.noultestament.activities;
+package com.lovib.noultestament.activities;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -16,11 +14,11 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.example.noultestament.R;
-import com.example.noultestament.utils.AudioPlayer;
-import com.example.noultestament.utils.Constants;
-import com.example.noultestament.utils.Note;
-import com.example.noultestament.utils.Storage;
+import com.lovib.noultestament.R;
+import com.lovib.noultestament.utils.AudioPlayer;
+import com.lovib.noultestament.utils.Constants;
+import com.lovib.noultestament.utils.Note;
+import com.lovib.noultestament.utils.Storage;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -28,9 +26,9 @@ import java.util.ArrayList;
 public class AudioActivity extends AppCompatActivity {
     private int chapter, order;
     private boolean fromForceClosed;
-    private TextView bookName, chapterTxt, currentTime, duration, addNote;
+    private TextView bookName, chapterTxt, currentTime, duration;
     private SeekBar seekBar;
-    private ImageView playPause, prev, next, replay, forward, back;
+    private ImageView playPause, prev, next, replay, forward, back, addNote, share;
     private ConstraintLayout marks_layout;
     private AudioPlayer audioPlayer;
     private boolean isDragged = false;
@@ -117,6 +115,12 @@ public class AudioActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        share.setOnClickListener(v -> {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "Descarcă aplicația și ascultă din Cuvânt împreună cu mine\nhttps://play.google.com/store/apps/details?id=com.lovib.noultestament");
+            startActivity(Intent.createChooser(shareIntent, "Share via"));
+        });
     }
 
     private void setupData() {
@@ -125,6 +129,7 @@ public class AudioActivity extends AppCompatActivity {
         currentTime = findViewById(R.id.current_time);
         duration = findViewById(R.id.total_time);
         addNote = findViewById(R.id.addNote);
+        share = findViewById(R.id.share);
         seekBar = findViewById(R.id.track);
         playPause = findViewById(R.id.play_pause);
         prev = findViewById(R.id.previous);

@@ -1,9 +1,8 @@
-package com.example.noultestament.adapters;
+package com.lovib.noultestament.adapters;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -17,14 +16,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.noultestament.R;
-import com.example.noultestament.activities.AudioActivity;
-import com.example.noultestament.utils.Constants;
-import com.example.noultestament.utils.Note;
-import com.example.noultestament.utils.Storage;
+import com.lovib.noultestament.R;
+import com.lovib.noultestament.activities.AudioActivity;
+import com.lovib.noultestament.utils.Constants;
+import com.lovib.noultestament.utils.Note;
+import com.lovib.noultestament.utils.Storage;
 
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
     private boolean addNote;

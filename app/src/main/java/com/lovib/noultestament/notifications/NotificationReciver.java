@@ -1,19 +1,16 @@
-package com.example.noultestament.notifications;
+package com.lovib.noultestament.notifications;
 
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.os.Build;
 
 import androidx.core.app.NotificationCompat;
 
-import com.example.noultestament.MainActivity;
-import com.example.noultestament.R;
-import com.example.noultestament.utils.Constants;
+import com.lovib.noultestament.MainActivity;
+import com.lovib.noultestament.R;
+import com.lovib.noultestament.utils.Constants;
 
 public class NotificationReciver extends BroadcastReceiver {
     @Override

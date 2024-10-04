@@ -1,4 +1,4 @@
-package com.example.noultestament.utils;
+package com.lovib.noultestament.utils;
 
 import android.content.Context;
 import android.media.MediaPlayer;
@@ -91,11 +91,13 @@ public class AudioPlayer {
     public void next() throws FileNotFoundException {
         if (currentChapter < Storage.getInstance().getBook(order).getChapters()) {
             currentChapter++;
+            stopAudio();
             setupAudio();
             playAudio();
         } else if (order < Storage.getInstance().getBooks().size()) {
             order++;
             currentChapter = 1;
+            stopAudio();
             setupAudio();
             playAudio();
         }
@@ -104,11 +106,13 @@ public class AudioPlayer {
     public void previous() throws FileNotFoundException {
         if (currentChapter > 1) {
             currentChapter--;
+            stopAudio();
             setupAudio();
             playAudio();
         } else if (order > 1) {
             order--;
             currentChapter = Storage.getInstance().getBook(order).getChapters();
+            stopAudio();
             setupAudio();
             playAudio();
         }

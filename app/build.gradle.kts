@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.noultestament"
+    namespace = "com.lovib.noultestament"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.noultestament"
+        applicationId = "com.lovib.noultestament"
         minSdk = 29
         targetSdk = 34
         versionCode = 1
